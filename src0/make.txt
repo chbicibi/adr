@@ -1,0 +1,1096 @@
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# これはフリーソフトウェアです. 利用許諾についてはソースを
+# ご覧ください.
+# 商業性や特定の目的への適合性の如何に関わらず, 無保証です.
+
+# This program built for i386-pc-mingw32
+
+# Make データベース出力 Sat Nov 19 23:15:37 2016
+
+# 変数
+
+# 自動変数
+<D = $(patsubst %/,%,$(dir $<))
+# 自動変数
+?F = $(notdir $?)
+# 環境変数
+CommonProgramFiles = C:\Program Files (x86)\Common Files
+# makefile 変数 (`makefile', 5 行目から)
+SRC = test.f08
+# makefile 変数
+MAKEFLAGS = p
+# デフォルト
+F77FLAGS = $(FFLAGS)
+# デフォルト
+CWEAVE = cweave
+# makefile 変数 (`makefile', 2 行目から)
+TARGET = main.exe
+# 自動変数
+?D = $(patsubst %/,%,$(dir $?))
+# 自動変数
+@D = $(patsubst %/,%,$(dir $@))
+# 環境変数
+HOMEDRIVE = C:
+# 自動変数
+@F = $(notdir $@)
+# 自動変数
+^D = $(patsubst %/,%,$(dir $^))
+# makefile 変数
+CURDIR := C:/Yamada/研究用_デブリ/ADR/src0
+# デフォルト
+SHELL := sh.exe
+# デフォルト
+RM = rm -f
+# デフォルト
+CO = co
+# 環境変数
+ProgramFiles(x86) = C:\Program Files (x86)
+# デフォルト
+PREPROCESS.F = $(FC) $(FFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -F
+# デフォルト
+LINK.o = $(CC) $(LDFLAGS) $(TARGET_ARCH)
+# デフォルト
+OUTPUT_OPTION = -o $@
+# デフォルト
+COMPILE.cpp = $(COMPILE.cc)
+# 環境変数
+PATHEXT = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.RB;.RBW
+# makefile 変数 (`makefile', 1 行目から)
+MAKEFILE_LIST :=  makefile
+# 環境変数
+FPS_BROWSER_USER_PROFILE_STRING = Default
+# 環境変数
+TMP = C:\Users\YuniboA\AppData\Local\Temp
+# デフォルト
+LINK.p = $(PC) $(PFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+# デフォルト
+CC = cc
+# 環境変数
+SystemDrive = C:
+# 環境変数
+CommonProgramFiles(x86) = C:\Program Files (x86)\Common Files
+# デフォルト
+CHECKOUT,v = +$(if $(wildcard $@),,$(CO) $(COFLAGS) $< $@)
+# デフォルト
+CPP = $(CC) -E
+# 環境変数
+SystemRoot = C:\Windows
+# デフォルト
+LINK.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+# 環境変数
+PATH = C:\Yamada\Tools\Ruby\Ruby23\bin;C:\Yamada\Tools\make\make-3.81-bin\bin;C:\Yamada\Tools\make\libiconv-1.9.2-1-bin\bin;C:\Yamada\Tools\make\libintl-0.14.4-bin\bin;C:\Yamada\Tools\MinGW\MinGW-x64\bin;C:\Yamada\Tools\gnuplot\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\OpenVPN\bin;C:\Program Files (x86)\Common Files\Sony Shared\FeliCaLibrary;C:\Program Files\Common Files\Sony Shared\FeliCaLibrary;C:\Program Files (x86)\Common Files\Sony Shared\FeliCaNFCLibrary;C:\Program Files\Common Files\Sony Shared\FeliCaNFCLibrary;C:\ProgramData\Ruby23-x64\bin;C:\Users\YuniboA\AppData\Local\Microsoft\WindowsApps
+# デフォルト
+LD = ld
+# デフォルト
+TEXI2DVI = texi2dvi
+# デフォルト
+YACC = yacc
+# デフォルト
+COMPILE.mod = $(M2C) $(M2FLAGS) $(MODFLAGS) $(TARGET_ARCH)
+# 環境変数
+PROCESSOR_ARCHITECTURE = x86
+# デフォルト
+LINK.r = $(FC) $(FFLAGS) $(RFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+# 環境変数
+USERPROFILE = C:\Users\YuniboA
+# デフォルト
+LINT = lint
+# デフォルト
+COMPILE.f = $(FC) $(FFLAGS) $(TARGET_ARCH) -c
+# デフォルト
+LINT.c = $(LINT) $(LINTFLAGS) $(CPPFLAGS) $(TARGET_ARCH)
+# 環境変数
+ALLUSERSPROFILE = C:\ProgramData
+# 環境変数
+ComSpec = C:\Windows\system32\cmd.exe
+# デフォルト
+YACC.y = $(YACC) $(YFLAGS)
+# デフォルト
+AR = ar
+# 環境変数
+NUMBER_OF_PROCESSORS = 8
+# デフォルト
+.FEATURES := target-specific order-only second-expansion else-if archives
+# デフォルト
+TANGLE = tangle
+# 環境変数
+ProgramW6432 = C:\Program Files
+# デフォルト
+GET = get
+# 自動変数
+%F = $(notdir $%)
+# デフォルト
+COMPILE.F = $(FC) $(FFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+# デフォルト
+CTANGLE = ctangle
+# デフォルト
+.LIBPATTERNS = lib%.so lib%.a
+# 環境変数
+COMPUTERNAME = YUNIBOA-PC
+# デフォルト
+LINK.C = $(LINK.cc)
+# デフォルト
+LINK.S = $(CC) $(ASFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_MACH)
+# デフォルト
+PREPROCESS.r = $(FC) $(FFLAGS) $(RFLAGS) $(TARGET_ARCH) -F
+# デフォルト
+LINK.c = $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+# 環境変数
+USERNAME = YuniboA
+# 環境変数
+PUBLIC = C:\Users\Public
+# デフォルト
+LINK.s = $(CC) $(ASFLAGS) $(LDFLAGS) $(TARGET_MACH)
+# 環境変数
+CommonProgramW6432 = C:\Program Files\Common Files
+# 環境変数
+ProgramData = C:\ProgramData
+# 環境変数
+LOGONSERVER = \\YUNIBOA-PC
+# 環境変数
+USERDOMAIN = YUNIBOA-PC
+# デフォルト
+MAKE = $(MAKE_COMMAND)
+# 環境変数
+QT_DEVICE_PIXEL_RATIO = auto
+# デフォルト
+AS = as
+# デフォルト
+PREPROCESS.S = $(CC) -E $(CPPFLAGS)
+# デフォルト
+COMPILE.p = $(PC) $(PFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+# デフォルト
+MAKE_VERSION := 3.81
+# makefile 変数 (`makefile', 11 行目から)
+FC = gfortran
+# makefile 変数
+.DEFAULT_GOAL := all
+# makefile 変数 (`makefile', 14 行目から)
+FCFLAGS = -Wall -O2
+# 自動変数
+%D = $(patsubst %/,%,$(dir $%))
+# 環境変数
+LOCALAPPDATA = C:\Users\YuniboA\AppData\Local
+# デフォルト
+ARFLAGS = rv
+# デフォルト
+WEAVE = weave
+# デフォルト
+MAKE_COMMAND := make
+# デフォルト
+LINK.cpp = $(LINK.cc)
+# 環境変数
+PROCESSOR_ARCHITEW6432 = AMD64
+# デフォルト
+F77 = $(FC)
+# デフォルト
+COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+# デフォルト
+.VARIABLES := 
+# デフォルト
+PC = pc
+# 自動変数
+*F = $(notdir $*)
+# 環境変数
+PROCESSOR_IDENTIFIER = Intel64 Family 6 Model 60 Stepping 3, GenuineIntel
+# 環境変数
+OS = Windows_NT
+# デフォルト
+COMPILE.def = $(M2C) $(M2FLAGS) $(DEFFLAGS) $(TARGET_ARCH)
+# デフォルト
+LEX = lex
+# 環境変数
+HOMEPATH = \Users\YuniboA
+# 環境変数
+PROMPT = $P$G
+# 環境変数
+MFLAGS = -p
+# 自動変数
+*D = $(patsubst %/,%,$(dir $*))
+# デフォルト
+LEX.l = $(LEX) $(LFLAGS) -t
+# 環境変数
+PSModulePath = %ProgramFiles%\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules
+# 自動変数
++D = $(patsubst %/,%,$(dir $+))
+# 環境変数
+windir = C:\Windows
+# デフォルト
+COMPILE.r = $(FC) $(FFLAGS) $(RFLAGS) $(TARGET_ARCH) -c
+# 自動変数
++F = $(notdir $+)
+# デフォルト
+M2C = m2c
+# デフォルト
+SUFFIXES := .out .a .ln .o .c .cc .C .cpp .p .f .F .r .y .l .s .S .mod .sym .def .h .info .dvi .tex .texinfo .texi .txinfo .w .ch .web .sh .elc .el
+# 環境変数
+APPDATA = C:\Users\YuniboA\AppData\Roaming
+# 環境変数
+TEMP = C:\Users\YuniboA\AppData\Local\Temp
+# デフォルト
+MAKEFILES := 
+# 自動変数
+<F = $(notdir $<)
+# デフォルト
+CXX = g++
+# デフォルト
+COFLAGS = 
+# デフォルト
+COMPILE.C = $(COMPILE.cc)
+# 自動変数
+^F = $(notdir $^)
+# デフォルト
+COMPILE.S = $(CC) $(ASFLAGS) $(CPPFLAGS) $(TARGET_MACH) -c
+# デフォルト
+LINK.F = $(FC) $(FFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+# 環境変数
+ProgramFiles = C:\Program Files (x86)
+# デフォルト
+COMPILE.c = $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+# 環境変数
+PROCESSOR_REVISION = 3c03
+# デフォルト
+COMPILE.s = $(AS) $(ASFLAGS) $(TARGET_MACH)
+# 環境変数
+MAKELEVEL := 0
+# デフォルト
+MAKEINFO = makeinfo
+# デフォルト
+TEX = tex
+# makefile 変数 (`makefile', 8 行目から)
+OBJS = $(SRC:.f08=.o)
+# 環境変数
+PROCESSOR_LEVEL = 6
+# 環境変数
+FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
+# デフォルト
+LINK.f = $(FC) $(FFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+# 環境変数
+USERDOMAIN_ROAMINGPROFILE = YUNIBOA-PC
+# 変数セットのハッシュテーブルの状態:
+# Load=129/1024=13%, Rehash=0, Collisions=17/153=11%
+
+# Pattern-specific Variable Values
+
+# パターン指定変数の値なし.
+
+# ディレクトリ
+
+# C:\Yamada\Tools\MinGW\MinGW-x64\bin (key C:/Yamada/Tools/MinGW/MinGW-x64/bin, mtime 1472960589): 61 個のファイル, 0 個の適用不能ファイル名.
+# C:\Users\YuniboA\AppData\Local\Microsoft\WindowsApps (key C:/Users/YuniboA/AppData/Local/Microsoft/WindowsApps, mtime 1468669668): 2 個のファイル, 0 個の適用不能ファイル名.
+# RCS: 状態を調べられませんでした.
+# C:\Yamada\Tools\Ruby\Ruby23\bin (key C:/Yamada/Tools/Ruby/Ruby23/bin, mtime 1472960661): 25 個のファイル, 0 個の適用不能ファイル名.
+# C:\Windows\System32\WindowsPowerShell\v1.0\ (key C:/Windows/System32/WindowsPowerShell/v1.0/, mtime 1475310907): 30 個のファイル, 0 個の適用不能ファイル名.
+# C:\Windows\System32\Wbem (key C:/Windows/System32/Wbem, mtime 1475310907): 157 個のファイル, 0 個の適用不能ファイル名.
+# . (key C:/Yamada/研究用_デブリ/ADR/src0, mtime 1479564937): 11 個のファイル, 43 個の適用不能ファイル名.
+# SCCS: 状態を調べられませんでした.
+# C:\Program Files\Common Files\Sony Shared\FeliCaLibrary (key C:/Program Files/Common Files/Sony Shared/FeliCaLibrary, mtime 1472979266): 6 個のファイル, 0 個の適用不能ファイル名.
+# C:\Program Files (x86)\Common Files\Sony Shared\FeliCaNFCLibrary (key C:/Program Files (x86)/Common Files/Sony Shared/FeliCaNFCLibrary, mtime 1472979267): 4 個のファイル, 0 個の適用不能ファイル名.
+# C:\Yamada\Tools\make\libiconv-1.9.2-1-bin\bin (key C:/Yamada/Tools/make/libiconv-1.9.2-1-bin/bin, mtime 1479555745): 5 個のファイル, 0 個の適用不能ファイル名.
+# C:\Program Files\OpenVPN\bin (key C:/Program Files/OpenVPN/bin, mtime 1472960164): 9 個のファイル, 0 個の適用不能ファイル名.
+# C:\Windows (key C:/Windows, mtime 1478650545): 106 個のファイル, 0 個の適用不能ファイル名.
+# C:\Yamada\Tools\make\libintl-0.14.4-bin\bin (key C:/Yamada/Tools/make/libintl-0.14.4-bin/bin, mtime 1479555643): 3 個のファイル, 0 個の適用不能ファイル名.
+# C:\Yamada\Tools\make\make-3.81-bin\bin (key C:/Yamada/Tools/make/make-3.81-bin/bin, mtime 1479555297): 3 個のファイル, 0 個の適用不能ファイル名.
+# C:\Program Files (x86)\Common Files\Sony Shared\FeliCaLibrary (key C:/Program Files (x86)/Common Files/Sony Shared/FeliCaLibrary, mtime 1472979271): 9 個のファイル, 0 個の適用不能ファイル名.
+# C:\Yamada\Tools\gnuplot\bin (key C:/Yamada/Tools/gnuplot/bin, mtime 1472960501): 47 個のファイル, 0 個の適用不能ファイル名.
+# C:\Windows\system32 (key C:/Windows/system32, mtime 1479127453): 2746 個のファイル, 0 個の適用不能ファイル名.
+# C:\ProgramData\Ruby23-x64\bin (key C:/ProgramData/Ruby23-x64/bin, mtime 1472934311): 28 個のファイル, 0 個の適用不能ファイル名.
+# C:\Program Files\Common Files\Sony Shared\FeliCaNFCLibrary (key C:/Program Files/Common Files/Sony Shared/FeliCaNFCLibrary, mtime 1472979269): 4 個のファイル, 0 個の適用不能ファイル名.
+
+# 3256 個のファイル, 43 個の適用不能ファイル名 (20 個のディレクトリ内).
+
+# 暗黙ルール
+
+%.out:
+
+%.a:
+
+%.ln:
+
+%.o:
+
+%: %.o
+#  実行するコマンド (ビルトイン):
+	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+%.c:
+
+%: %.c
+#  実行するコマンド (ビルトイン):
+	$(LINK.c) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+%.ln: %.c
+#  実行するコマンド (ビルトイン):
+	$(LINT.c) -C$* $<
+
+%.o: %.c
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.c) $(OUTPUT_OPTION) $<
+
+%.cc:
+
+%: %.cc
+#  実行するコマンド (ビルトイン):
+	$(LINK.cc) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+%.o: %.cc
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.cc) $(OUTPUT_OPTION) $<
+
+%.cpp:
+
+%: %.cpp
+#  実行するコマンド (ビルトイン):
+	$(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+%.o: %.cpp
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
+
+%.p:
+
+%: %.p
+#  実行するコマンド (ビルトイン):
+	$(LINK.p) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+%.o: %.p
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.p) $(OUTPUT_OPTION) $<
+
+%.f:
+
+%: %.f
+#  実行するコマンド (ビルトイン):
+	$(LINK.f) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+%.o: %.f
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.f) $(OUTPUT_OPTION) $<
+
+%.r:
+
+%: %.r
+#  実行するコマンド (ビルトイン):
+	$(LINK.r) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+%.o: %.r
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.r) $(OUTPUT_OPTION) $<
+
+%.f: %.r
+#  実行するコマンド (ビルトイン):
+	$(PREPROCESS.r) $(OUTPUT_OPTION) $<
+
+%.y:
+
+%.ln: %.y
+#  実行するコマンド (ビルトイン):
+	$(YACC.y) $< 
+	$(LINT.c) -C$* y.tab.c 
+	$(RM) y.tab.c
+
+%.c: %.y
+#  実行するコマンド (ビルトイン):
+	$(YACC.y) $< 
+	mv -f y.tab.c $@
+
+%.l:
+
+%.ln: %.l
+#  実行するコマンド (ビルトイン):
+	@$(RM) $*.c
+	$(LEX.l) $< > $*.c
+	$(LINT.c) -i $*.c -o $@
+	$(RM) $*.c
+
+%.c: %.l
+#  実行するコマンド (ビルトイン):
+	@$(RM) $@ 
+	$(LEX.l) $< > $@
+
+%.r: %.l
+#  実行するコマンド (ビルトイン):
+	$(LEX.l) $< > $@ 
+	mv -f lex.yy.r $@
+
+%.s:
+
+%: %.s
+#  実行するコマンド (ビルトイン):
+	$(LINK.s) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+%.o: %.s
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.s) -o $@ $<
+
+%.mod:
+
+%: %.mod
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.mod) -o $@ -e $@ $^
+
+%.o: %.mod
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.mod) -o $@ $<
+
+%.sym:
+
+%.def:
+
+%.sym: %.def
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.def) -o $@ $<
+
+%.h:
+
+%.info:
+
+%.dvi:
+
+%.tex:
+
+%.dvi: %.tex
+#  実行するコマンド (ビルトイン):
+	$(TEX) $<
+
+%.texinfo:
+
+%.info: %.texinfo
+#  実行するコマンド (ビルトイン):
+	$(MAKEINFO) $(MAKEINFO_FLAGS) $< -o $@
+
+%.dvi: %.texinfo
+#  実行するコマンド (ビルトイン):
+	$(TEXI2DVI) $(TEXI2DVI_FLAGS) $<
+
+%.texi:
+
+%.info: %.texi
+#  実行するコマンド (ビルトイン):
+	$(MAKEINFO) $(MAKEINFO_FLAGS) $< -o $@
+
+%.dvi: %.texi
+#  実行するコマンド (ビルトイン):
+	$(TEXI2DVI) $(TEXI2DVI_FLAGS) $<
+
+%.txinfo:
+
+%.info: %.txinfo
+#  実行するコマンド (ビルトイン):
+	$(MAKEINFO) $(MAKEINFO_FLAGS) $< -o $@
+
+%.dvi: %.txinfo
+#  実行するコマンド (ビルトイン):
+	$(TEXI2DVI) $(TEXI2DVI_FLAGS) $<
+
+%.w:
+
+%.c: %.w
+#  実行するコマンド (ビルトイン):
+	$(CTANGLE) $< - $@
+
+%.tex: %.w
+#  実行するコマンド (ビルトイン):
+	$(CWEAVE) $< - $@
+
+%.ch:
+
+%.web:
+
+%.p: %.web
+#  実行するコマンド (ビルトイン):
+	$(TANGLE) $<
+
+%.tex: %.web
+#  実行するコマンド (ビルトイン):
+	$(WEAVE) $<
+
+%.sh:
+
+%: %.sh
+#  実行するコマンド (ビルトイン):
+	cat $< >$@ 
+	chmod a+x $@
+
+%.elc:
+
+%.el:
+
+%.f08:
+
+%.mod: %.f08
+#  実行するコマンド (`makefile', 27 行目から):
+	$(FC) $(FCFLAGS) -c $< $(FCFLAGS) -o $@
+	
+
+(%): %
+#  実行するコマンド (ビルトイン):
+	$(AR) $(ARFLAGS) $@ $<
+
+%.out: %
+#  実行するコマンド (ビルトイン):
+	@rm -f $@ 
+	cp $< $@
+
+%.c: %.w %.ch
+#  実行するコマンド (ビルトイン):
+	$(CTANGLE) $^ $@
+
+%.tex: %.w %.ch
+#  実行するコマンド (ビルトイン):
+	$(CWEAVE) $^ $@
+
+%:: %,v
+#  実行するコマンド (ビルトイン):
+	$(CHECKOUT,v)
+
+%:: RCS/%,v
+#  実行するコマンド (ビルトイン):
+	$(CHECKOUT,v)
+
+%:: RCS/%
+#  実行するコマンド (ビルトイン):
+	$(CHECKOUT,v)
+
+%:: s.%
+#  実行するコマンド (ビルトイン):
+	$(GET) $(GFLAGS) $(SCCS_OUTPUT_OPTION) $<
+
+%:: SCCS/s.%
+#  実行するコマンド (ビルトイン):
+	$(GET) $(GFLAGS) $(SCCS_OUTPUT_OPTION) $<
+
+# 77 個の暗黙ルール, 5 (6.5%) 以上.
+
+# ファイル
+
+# ターゲットではありません:
+.web.p:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(TANGLE) $<
+
+# ターゲットではありません:
+.f08:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.l.r:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(LEX.l) $< > $@ 
+	mv -f lex.yy.r $@
+
+# ターゲットではありません:
+.dvi:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+all: main.exe
+#  暗黙ルールの探索が行われました.
+#  ファイルが存在しません.
+#  ファイルは更新されていません.
+# 変数セットのハッシュテーブルの状態:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# ターゲットではありません:
+.y.ln:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(YACC.y) $< 
+	$(LINT.c) -C$* y.tab.c 
+	$(RM) y.tab.c
+
+# ターゲットではありません:
+.o:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+# ターゲットではありません:
+.y:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.def.sym:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.def) -o $@ $<
+
+# ターゲットではありません:
+.p.o:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.p) $(OUTPUT_OPTION) $<
+
+# ターゲットではありません:
+.p:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(LINK.p) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+# ターゲットではありません:
+.txinfo.dvi:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(TEXI2DVI) $(TEXI2DVI_FLAGS) $<
+
+# ターゲットではありません:
+.a:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.DEFAULT:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.l.ln:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	@$(RM) $*.c
+	$(LEX.l) $< > $*.c
+	$(LINT.c) -i $*.c -o $@
+	$(RM) $*.c
+
+# ターゲットではありません:
+.w.c:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(CTANGLE) $< - $@
+
+# ターゲットではありません:
+.texi.dvi:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(TEXI2DVI) $(TEXI2DVI_FLAGS) $<
+
+# ターゲットではありません:
+.sh:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	cat $< >$@ 
+	chmod a+x $@
+
+# ターゲットではありません:
+.cc:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(LINK.cc) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+# ターゲットではありません:
+test.f08:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.cc.o:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.cc) $(OUTPUT_OPTION) $<
+
+main.exe: test.o main.f08 test.f08
+#  暗黙ルールの探索は行われませんでした.
+#  ファイルが存在しません.
+#  ファイルは更新されていません.
+# 変数セットのハッシュテーブルの状態:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+#  実行するコマンド (`makefile', 24 行目から):
+	$(FC) $(FCFLAGS) -o $(OBJS)
+	
+
+# ターゲットではありません:
+.def:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.r.o:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.r) $(OUTPUT_OPTION) $<
+
+# ターゲットではありません:
+.r:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(LINK.r) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+# ターゲットではありません:
+test.o:
+#  暗黙ルールの探索が行われました.
+#  ファイルが存在しません.
+#  ファイルは更新されていません.
+# 変数セットのハッシュテーブルの状態:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# ターゲットではありません:
+makefile:
+#  暗黙ルールの探索が行われました.
+#  最終修正 2016-11-19 23:14:30
+#  ファイルは更新されています.
+#  更新に成功しました.
+# 変数セットのハッシュテーブルの状態:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# ターゲットではありません:
+.info:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.elc:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.l.c:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	@$(RM) $@ 
+	$(LEX.l) $< > $@
+
+# ターゲットではありません:
+.out:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.r.f:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(PREPROCESS.r) $(OUTPUT_OPTION) $<
+
+# ターゲットではありません:
+.texinfo.info:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(MAKEINFO) $(MAKEINFO_FLAGS) $< -o $@
+
+# ターゲットではありません:
+.c:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(LINK.c) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+# ターゲットではありません:
+.w.tex:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(CWEAVE) $< - $@
+
+# ターゲットではありません:
+.c.ln:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(LINT.c) -C$* $<
+
+# ターゲットではありません:
+.s.o:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.s) -o $@ $<
+
+# ターゲットではありません:
+.s:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(LINK.s) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+# ターゲットではありません:
+.texinfo.dvi:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(TEXI2DVI) $(TEXI2DVI_FLAGS) $<
+
+.SUFFIXES: .out .a .ln .o .c .cc .c .cpp .p .f .f .r .y .l .s .s .mod .sym .def .h .info .dvi .tex .texinfo .texi .txinfo .w .ch .web .sh .elc .el .f08
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.el:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.texinfo:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.y.c:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(YACC.y) $< 
+	mv -f y.tab.c $@
+
+# ターゲットではありません:
+.web.tex:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(WEAVE) $<
+
+# ターゲットではありません:
+.texi.info:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(MAKEINFO) $(MAKEINFO_FLAGS) $< -o $@
+
+# ターゲットではありません:
+.h:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.tex.dvi:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(TEX) $<
+
+# ターゲットではありません:
+.cpp.o:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
+
+# ターゲットではありません:
+.cpp:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(LINK.cpp) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+clean:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (`makefile', 30 行目から):
+	rm -f $(OBJS) $(OBJS:.o=.mod) $(PROGS)
+	
+
+# ターゲットではありません:
+.ln:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.texi:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.txinfo:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.tex:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.txinfo.info:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(MAKEINFO) $(MAKEINFO_FLAGS) $< -o $@
+
+# ターゲットではありません:
+main.f08:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.ch:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+.f08.mod:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (`makefile', 27 行目から):
+	$(FC) $(FCFLAGS) -c $< $(FCFLAGS) -o $@
+	
+
+# ターゲットではありません:
+.S.s:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(PREPROCESS.S) $< > $@
+
+# ターゲットではありません:
+.mod:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.mod) -o $@ -e $@ $^
+
+# ターゲットではありません:
+.mod.o:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.mod) -o $@ $<
+
+# ターゲットではありません:
+.F.f:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(PREPROCESS.F) $(OUTPUT_OPTION) $<
+
+# ターゲットではありません:
+.w:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.c.o:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.c) $(OUTPUT_OPTION) $<
+
+# ターゲットではありません:
+.l:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.web:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.sym:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+
+# ターゲットではありません:
+.f:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(LINK.f) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+# ターゲットではありません:
+.f.o:
+#  暗黙ルールの探索は行われませんでした.
+#  修正時刻がチェックされることはありません.
+#  ファイルは更新されていません.
+#  実行するコマンド (ビルトイン):
+	$(COMPILE.f) $(OUTPUT_OPTION) $<
+
+# ファイルハッシュテーブルの状態:
+# Load=69/1024=7%, Rehash=0, Collisions=308/1513=20%
+# VPATH 探索パス
+
+# `vpath' 探索パスはありません
+
+# 一般の (`VPATH' 変数) 探索パスなし.
+
+# # of strings in strcache: 1
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
+
+# Make データベース終了 Sat Nov 19 23:15:37 2016
+

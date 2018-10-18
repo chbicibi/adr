@@ -1,0 +1,73 @@
+# ===================== CONFIG =====================
+# Output destination: 0->window, 1->png
+term = 0
+
+# Directory
+dir = '../result'
+
+# Input file
+file_map = dir . '/map.dat'
+file_route = dir . '/route.dat'
+
+# Output image file
+# Output directory must already exist
+file_png = dir . '/plot/route%03d.png'
+
+# Output interval
+step = 1
+
+# ===================== CONFIG =====================
+
+if (term == 1) {
+  set term png size 500, 500
+} else {
+  set term window size 500, 500
+  # set lmargin 2
+  # set rmargin 0
+  # set tmargin 2
+  set bmargin 5
+}
+
+set size ratio 1
+
+set nolabel
+
+set xrange[-1:1]
+set yrange[-1:1]
+
+set label 1 point pt 7 lc rgb "red" at 0, 0
+
+stp0 = 0
+stp = -1
+i = 0
+
+while (stp != stp0) {
+  stp0 = stp
+
+  set term png
+  set output
+
+  plot file_route every ::0:i:0:i using (stp = $1) with points ps 0 notitle
+  set label 2 at graph 0.5,-0.1 center sprintf('step = %10d', stp)
+
+  if (stp != stp0) {
+    replot file_route every ::1:i::i with lines lt 1 notitle
+    # replot file_route every ::1:i::i with points pt 6 ps 0.2 notitle
+    replot file_map using 2:3 with points pt 6 ps 0.2 notitle
+
+    if (term == 1) {
+      set output sprintf(file_png, i)
+      replot
+    } else {
+      set term window
+      replot
+      pause 0.05
+    }
+    i = i + step
+  }
+}
+
+if (term != 1) {
+  set term window
+  pause mouse keypress
+}
