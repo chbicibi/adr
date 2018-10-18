@@ -1,0 +1,20 @@
+max(x,y)= ( (x) > (y) ) ? (x) : (y)
+strstrlt_sub(str,index,target)=(strstrt(str[index:],target)==0 ? \
+    max(index-strlen(target),0) : \
+    strstrlt_sub(str, index-1+strstrt(str[index:],target)+strlen(target),target))
+strstrlt(str,target)=strstrlt_sub(str,1,target)
+dirname(path)=strstrt(path, "\\")!= 0 ? substr(path, 1, strstrlt(path,"\\")-1) : ""
+cd dirname(ARG0)
+
+reset
+set ticslevel 0
+
+set xlabel 'deltaV, km/s'
+set ylabel 'totalRCS, m^2'
+set zlabel 'generation' rotate by 90
+
+set xrange[0:]
+set yrange[0:]
+
+splot 'delta_V_result.csv' using 1:2:4 every ::::740:1 with points pt 7 lc palette notitle
+pause mouse keypress
