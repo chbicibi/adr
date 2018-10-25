@@ -1,3 +1,7 @@
 *.csv
 *.plt
 *.png
+*.o
+*.mod
+*.smod
+config/
