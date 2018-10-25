@@ -91,9 +91,9 @@ when "2"
 when "otest"
   idata = File.read "plot_orbit.plt"
   10.times do |i|
-    angle = File.readlines("/path/to/myec/test_%02d.out" % i)[0][1..-1].to_f
+    angle = File.readlines("C:/Yamada/Studies/MyEC/test_%02d.out" % i)[0][1..-1].to_f
     data = setterm  idata, 1
-    data = setifo   data, "/path/to/myec/test_%02d.out" % i
+    data = setifo   data, "C:/Yamada/Studies/MyEC/test_%02d.out" % i
     data = setview  data, 60, angle - 90
     data = setorbit data, [*0...5]
     # data = setarrow data, 1, [7078, 0, 0], [2000, 0, 0]
