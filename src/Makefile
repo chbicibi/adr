@@ -12,12 +12,12 @@ OBJS    = main2_op.o
 OBJS    = main4.o class_prob1.o class_prob2.o class_opt1.o class_opt2.o
 # OBJS    = plot_debris.o
 
-LIBPATH = C:\yam\Studies\Programs\Fortran\FEC\src\lib ..\liborbit
+LIBPATH = ../lib/fec/lib ../lib/orbit
+INCPATH = ../lib/fec/include ../lib/orbit
 LIBNAME = fec orbit
 LIBOPT  = $(addprefix -L,$(LIBPATH)) $(addprefix -l,$(LIBNAME))
-INCOPT  = $(addprefix -I,$(LIBPATH))
+INCOPT  = $(addprefix -I,$(INCPATH))
 LIBBLAS = -llapack -lrefblas
-INCLUDE = ..\include
 
 
 ################################################################################
