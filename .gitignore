@@ -6,3 +6,4 @@
 *.plt
 *.png
 config/
+__*__/

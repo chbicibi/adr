@@ -26,6 +26,7 @@ LIBBLAS = -llapack -lrefblas
 .PHONY: clean
 
 all: $(TARGET)
+test: test.exe
 
 $(TARGET): $(OBJS)
 	$(FC) $(FCFLAGS) -o $@ $^ $(LIBOPT) $(LIBBLAS)
@@ -35,6 +36,9 @@ $(TARGET): $(OBJS)
 
 clean:
 	rm -f *.o *.mod *.smod
+
+test.exe: test.o
+	$(FC) -o $@ $<
 
 ################################################################################
 

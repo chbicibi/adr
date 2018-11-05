@@ -1,0 +1,3 @@
+../data/debri_elements.txt ! 2行軌道要素ファイル
+../data/RCS_list.txt       ! デブリRCSファイル
+result/                    ! 出力ディレクトリ

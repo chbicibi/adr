@@ -13,8 +13,36 @@ module mod_main
   public :: main_test
 
   logical, allocatable :: LOC_ODD(:)
+  character(*), parameter :: input_file = "input.txt"
+  character(60), allocatable :: tle_file
+  character(60), allocatable :: rcs_file
+  character(60), allocatable :: out_dir
 
   contains
+
+  subroutine read_input
+      implicit none
+      integer :: unit, status
+
+      status = access(input_file, "r")
+
+      if (status > 0) then
+        print *, "File not found: " // input_file
+        print *, "status: ", status
+        call exit(1)
+      end if
+
+      open(newunit=unit, file=input_file)
+        read(unit, *) tle_file
+        read(unit, *) rcs_file
+        read(unit, *) out_dir
+      close(unit)
+
+      status = access(out_dir, " ")
+
+      if (status > 0) then
+      end if
+  end subroutine read_input
 
   subroutine main_test(opt)
     implicit none
@@ -36,6 +64,8 @@ module mod_main
     ts = "T"
     tc = "ORDER"
     tm = "SWAP"
+
+    call read_input
 
     call set_randomseed
     call set_odd(1000)
@@ -148,14 +178,10 @@ module mod_main
 
   subroutine init_debri
     implicit none
-    character(:), allocatable :: file_tle, file_rcs
     real(8) :: base_time
     integer :: i
 
-    file_tle = "../dat/debri_elements.txt"
-    file_rcs = "../dat/RCS_list.txt"
-
-    call load_debri(-1, file_tle, file_rcs)
+    call load_debri(-1, tle_file, rcs_file)
     ! base_time = DEBRIS(1)%orbit%epc
     base_time = mjd(2018, 0d0)
 
