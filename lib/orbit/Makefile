@@ -29,7 +29,7 @@ dynamic: $(TARLIBD)
 static: $(TARLIBS)
 
 $(TARLIBD): $(OBJS)
-	$(FC) $(FCFLAGS) -shared -o $@ $^ -L$(LIBPATH) $(LIBBLAS)
+	$(FC) $(FCFLAGS) -shared -o $@ $^ $(LIBOPT) -L$(LIBPATH) $(LIBBLAS)
 	# cp $@ $(DEST)/$@
 
 $(TARLIBS): $(OBJS)
