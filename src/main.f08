@@ -1,122 +1,148 @@
-program Main
-  use Base
-  use Base_Indiv
-  use GA_main
-  use GA_base
-  use IO_Input
-
+program main
+  use orbit_func
+  use orbit_base
+  use orbit_debri
+  use orbit_optimizer
   implicit none
 
-  select case (METHOD_TYPE)
-  case (0)
-    step_output_window = 1000
-    step_output_file   = 1000
-    lim_all            = 10 ** 7
-    call Main_Debri_0
-  case (1)
-    step_output_window = 100
-    step_output_file   = 100
-    lim_all            = 10 ** 7
-    call Main_Debri_1
-  case (2)
-    step_output_window = 1
-    step_output_file   = 1
-    lim_all            = 10 ** 7
-    call Main_Debri_2
-  end select
-
-  call Terminate
+  ! call test33
+  call optimizer_main
 
   contains
 
-  subroutine Main_Debri_0
-    type(TGAhandle), pointer :: handle
-    real(8)                  :: result(3)
+  subroutine test1
+    implicit none
+    type(TOrbit) :: orbit1
+    real(8) :: vel(3), pos(3)
 
-    allocate(handle)
-    handle%mode           = [0, 3, 1, 3]
-    handle%num_target_all = INPUT_NUM_OBJECT_ALL
-    handle%num_chrom      = INPUT_NUM_OBJECT_SELECT
-    handle%num_indiv      = INPUT_GA_NUM_SAMPLE
-    handle%num_elite      = INPUT_GA_NUM_ELITE
-    handle%num_cross      = INPUT_GA_NUM_CROSS
-    handle%rate_mutate    = INPUT_GA_RATE_MUTATE
-    handle%lim_gener      = INPUT_GA_LIMIT_STEP
-    handle%convergence    = INPUT_GA_CONVERGENCE
+    call orbit1%initialize(epc=mjd(2017, 0d0), inc=99d0, ran=0d0, ecc=0d0, ap=0d0, ma=0d0, mm=86400d0/calc_period(6578d0))
 
-    if (handle%mode(1) == 0) handle%num_elite = handle%num_indiv ! for pareto
+    vel = orbit1%get_velocity()
+    pos = orbit1%get_position()
 
-    call GAMain0(handle)
+    print *, vel
+    print *, pos
+  end subroutine test1
 
-    result = abs(handle%indiv_best%object)
-    print "(a)", repeat("-", 80)
-    print "(a, 3f15.5)", "Elite: ", result
-    print "(a, i10)",    "Total: ", Counter_Eval
-  end subroutine Main_Debri_0
+  subroutine test2
+    implicit none
+    type(TOrbit) :: orbit1
+    real(8) :: vel(3), pos(3)
 
-  subroutine Main_Debri_1
-    type(TGAhandle), pointer :: handle, subhandle
-    real(8)                  :: result(3)
+    call load_debri(num_debris=-1, file_tle="../dat/debri_elements.txt", file_rcs="../dat/RCS_list.txt")
+    orbit1 = DEBRIS(1)%orbit
 
-    allocate(handle, subhandle)
+    vel = orbit1%get_velocity()
+    pos = orbit1%get_position()
 
-    handle%mode           = [0, 0, 1, 3]
-    handle%num_target_all = INPUT_NUM_OBJECT_ALL
-    handle%num_chrom      = INPUT_NUM_OBJECT_SELECT
-    handle%num_indiv      = 30
-    handle%num_elite      = INPUT_GA_NUM_ELITE
-    handle%num_cross      = INPUT_GA_NUM_CROSS
-    handle%rate_mutate    = INPUT_GA_RATE_MUTATE
-    handle%lim_gener      = INPUT_GA_LIMIT_STEP
-    handle%convergence    = INPUT_GA_CONVERGENCE
-    handle%interval_migration =  100
+    print *, orbit1%epc
+    print *, vel
+    print *, pos
+  end subroutine test2
 
-    subhandle             = handle
-    subhandle%mode        = [0, 3, 1, 0]
-    subhandle%num_indiv   = INPUT_GA_NUM_SAMPLE
+  subroutine test31
+    implicit none
+    type(TOrbit) :: dep, arr, trf
+    ! real(8) :: mid(3), vel(3), pos(3)
+    real(8) :: start, dt, dv
 
-    if (subhandle%mode(1) == 0) subhandle%num_elite = subhandle%num_indiv ! for pareto
-    handle%subhandle      => subhandle
+    print *, "test31"
 
-    call GAMain1(handle)
+    start = mjd(2018, 0d0)
+    call dep%initialize(epc=start, inc=99d0, ran=0d0, ecc=0d0, ap=0d0, ma=0d0, mm=86400d0/calc_period(6578d0))
+    call arr%initialize(epc=start, inc=99d0, ran=30d0, ecc=0d0, ap=0d0, ma=10d0, mm=86400d0/calc_period(6678d0))
 
-    result = abs(handle%indiv_best%object)
-    print "(a)", repeat("-", 80)
-    print "(a, 3f15.5)", "Elite: ", result
-    print "(a, i10)",    "Total: ", Counter_Eval
-  end subroutine Main_Debri_1
+    dt = dep%prd * 0.5d0
 
-  subroutine Main_Debri_2
-    type(TGAhandle), pointer :: handle, subhandle
-    real(8)                     :: result(3)
+    ! mid = []
 
-    allocate(handle, subhandle)
+    call lambert(start, dt, dep, arr, dv, trf)
 
-    handle%mode           = [0, 1, 1, 3]
-    handle%num_target_all = INPUT_NUM_OBJECT_ALL
-    handle%num_chrom      = INPUT_NUM_OBJECT_SELECT
-    handle%num_indiv      = INPUT_GA_NUM_SAMPLE
-    handle%num_elite      = INPUT_GA_NUM_ELITE
-    handle%num_cross      = INPUT_GA_NUM_CROSS
-    handle%rate_mutate    = INPUT_GA_RATE_MUTATE
-    handle%lim_gener      = INPUT_GA_LIMIT_STEP
-    handle%convergence    = INPUT_GA_CONVERGENCE
+    print *, dv
+    call dep%save(start, dt, "orbit1.csv", .true.)
+    call arr%save(start, dt, "orbit2.csv", .true.)
+    call trf%save(start, dt, "orbit3.csv", .true.)
+  end subroutine test31
 
-    subhandle             = handle
-    subhandle%mode        = [2, 2, 1, 0]
-    subhandle%num_indiv   = INPUT_GA_NUM_SAMPLE_INNER
-    subhandle%num_elite   = 5
-    subhandle%lim_gener   = 200
-    subhandle%convergence = 30
-    handle%subhandle      => subhandle
+  subroutine test32
+    implicit none
+    type(TOrbit) :: dep, arr, trf
+    ! real(8) :: mid(3), vel(3), pos(3)
+    real(8) :: start, dd, dt, dv
 
-    if (handle%mode(1) == 0) handle%num_elite = handle%num_indiv ! for pareto
+    print *, "test32"
 
-    call GAMain2(handle)
+    start = mjd(2018, 0d0)
+    call dep%initialize(epc=start, inc=99d0, ran=0d0, ecc=0d0, ap=0d0, ma=0d0, mm=86400d0/calc_period(6578d0))
+    call arr%initialize(epc=start, inc=99d0, ran=30d0, ecc=0d0, ap=0d0, ma=0d0, mm=86400d0/calc_period(6678d0))
 
-    result = abs(handle%indiv_best%object)
-    print "(a)", repeat("-", 80)
-    print "(a, 3f10.5)", "Elite: ", result
-    print "(a, i10)",    "Total: ", Counter_Eval
-  end subroutine Main_Debri_2
-end program Main
+    call hohmann(start, dep, arr, trf, dd, dt, dv)
+
+    print *, dv
+
+    call dep%save(dd, dt, "orbit1.csv", .true.)
+    call arr%save(dd, dt, "orbit2.csv", .true.)
+    call trf%save(dd, dt, "orbit3.csv", .true.)
+  end subroutine test32
+
+  subroutine test33
+    implicit none
+    type(TOrbit) :: dep, arr, trf
+    real(8) :: axis(3)!, vel(3), pos(3)
+    real(8) :: start, dd, dt, dv, theta, offset
+
+    print *, "test33"
+
+    start = mjd(2018, 0d0)
+
+    call dep%initialize(epc=start, inc=99d0, ran=0d0, ecc=0d0, ap=0d0, ma=0d0, mm=86400d0/calc_period(6578d0))
+    call arr%initialize(epc=start, inc=99d0, ran=30d0, ecc=0d0, ap=0d0, ma=0d0, mm=86400d0/calc_period(6678d0))
+
+    call intersection(dep, arr, axis, theta, offset)
+
+    dt = dep%prd * 0.5d0
+    dd = start + offset * SEC_DAY
+
+    call dep%move(dd, 0)
+    call lambert(dd, dt, dep, arr, dv, trf)
+
+    print "('dv='f15.8)", dv
+
+    call dep%save(dd, dt, "orbit1.csv", .true.)
+    call arr%save(dd, dt, "orbit2.csv", .true.)
+    call trf%save(dd, dt, "orbit3.csv", .true.)
+  end subroutine test33
+
+  subroutine test4
+    implicit none
+    type(TOrbit) :: dep, arr, trf
+    real(8) :: axis(3)!, vel(3), pos(3)
+    real(8) :: start, dd, dt, dv, theta, offset
+    integer :: i
+
+    print *, "test4"
+
+    start = mjd(2018, 0d0)
+
+    do i = 1, 100
+      call dep%initialize(epc=start, inc=99d0, ran=0d0, ecc=0d0, ap=0d0, ma=0d0, mm=86400d0/calc_period(7178d0))
+      call arr%initialize(epc=start, inc=99d0, ran=30d0, ecc=0d0, ap=0d0, ma=3d0 * i, mm=86400d0/calc_period(7378d0))
+
+      call intersection(dep, arr, axis, theta, offset)
+
+      dt = dep%prd * 0.5d0
+      dd = start + offset * SEC_DAY
+
+      call dep%move(dd, 0)
+      call lambert(dd, dt, dep, arr, dv, trf)
+
+      print "(i3f15.8)", i, dv
+      ! if (dv > 20) exit
+    end do
+
+    call dep%save(dd, dt, "orbit1.csv", .true.)
+    call arr%save(dd, dt, "orbit2.csv", .true.)
+    call trf%save(dd, dt, "orbit3.csv", .true.)
+  end subroutine test4
+
+end program main
