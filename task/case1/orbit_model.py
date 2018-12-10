@@ -33,10 +33,10 @@ from eclib.base import Creator
 from eclib.base import Population
 from eclib.base import HyperVolume
 
-import myutils as ut
+import utils as ut
 import case0 as orbitlib
 
-rcParams["animation.ffmpeg_path"] = "C:/yam/Tools/ffmpeg/bin/ffmpeg.exe"
+rcParams["animation.ffmpeg_path"] = "ffmpeg.exe"
 FFMpegWriter = anim.writers['ffmpeg']
 
 def show_anim(fig, update, frames=1000, init_func=lambda:None, interval=8, file=None, fps=2):

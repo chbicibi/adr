@@ -28,7 +28,7 @@ from eclib.base import Individual
 from eclib.base import NoisingIndividual
 from eclib.base import HyperVolume
 
-import myutils as ut
+import utils as ut
 import case0 as orbitlib
 
 
