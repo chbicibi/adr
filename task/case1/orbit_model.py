@@ -1,4 +1,5 @@
 import argparse
+import ctypes
 import glob
 import os
 import shutil
@@ -34,10 +35,14 @@ from eclib.base import Population
 from eclib.base import HyperVolume
 
 import utils as ut
-import case0 as orbitlib
+import problem as orbitlib
 
-rcParams["animation.ffmpeg_path"] = "ffmpeg.exe"
-FFMpegWriter = anim.writers['ffmpeg']
+
+def init_ffmpeg():
+    rcParams["animation.ffmpeg_path"] = "ffmpeg.exe"
+    FFMpegWriter = anim.writers['ffmpeg']
+    return FFMpegWriter
+
 
 def show_anim(fig, update, frames=1000, init_func=lambda:None, interval=8, file=None, fps=2):
   ani = anim.FuncAnimation(fig, update, frames=frames, init_func=init_func, interval=interval)
@@ -47,6 +52,7 @@ def show_anim(fig, update, frames=1000, init_func=lambda:None, interval=8, file=
     plt.show()
 
 
+################################################################################
 
 class Genome(tuple):
     ''' 進化計算遺伝子
@@ -80,13 +86,6 @@ class Genome(tuple):
         cls.weight = np.array(weight)
 
 
-class OrbitIndiv(Individual):
-    """docstring for OrbitIndiv"""
-    def __init__(self, arg):
-        super(OrbitIndiv, self).__init__()
-        self.arg = arg
-
-
 class Initializer(object):
     ''' [0, 1)の範囲の一様乱数による実数配列を返す
     '''
@@ -116,7 +115,8 @@ class Crossover(object):
         # print(xi1, xd1)
         # exit()
 
-        yi1, yi2 = self._ix((xi1, xi2)) # ndarray(int)
+        # yi1, yi2 = self._ix((xi1, xi2)) # ndarray(int)
+        yi1, yi2 = xi1, xi2 # ndarray(int)
         yd1, yd2 = self._dx((xd1, xd2)) # ndarray(double)
 
         return Genome((yi1, yd1)), Genome((yi2, yd2))
@@ -135,14 +135,15 @@ class Mutation(object):
 
 FUNC_FORTRAN = None
 class Problem(object):
-    def __init__(self, size):
+    def __init__(self, size, arg):
         global FUNC_FORTRAN
 
         if not FUNC_FORTRAN:
             # CDLLインスタンス作成
             libname = 'case0.dll'
             loader_path = '.'
-            cdll = np.ctypeslib.load_library(libname, loader_path)
+            # cdll = np.ctypeslib.load_library(libname, loader_path)
+            cdll = ctypes.WinDLL(libname)
 
             # 関数取得
             f_initialize = orbitlib.get_f_initialize(cdll)
@@ -164,6 +165,7 @@ class Problem(object):
         self._size = size
         self.function = f_call_problem
         self.imax = n_debris
+        self._arg = arg
 
     def __call__(self, genome):
         # 関数呼び出し
@@ -173,7 +175,7 @@ class Problem(object):
         return delv, rcs
 
     def __reduce_ex__(self, protocol):
-        return type(self), (self._size,)
+        return type(self), (self._size, self._arg)
 
 
 ################################################################################
@@ -324,520 +326,20 @@ class MOEAD_ENV(object):
         pass
         # self.optimizer.clear()
 
-################################################################################
-
-def ga_main1(model, out='result', clear_directory=False):
-    ''' GA実行
-    '''
-    if clear_directory and os.path.isdir(out):
-        shutil.rmtree(out)
-
-    popsize = 100
-    epoch = 100
-    ksize = 5
-    save_trigger = lambda i: i == epoch # 最後だけ
-
-    model_env = {'nsga2':NSGA2_ENV, 'moead':MOEAD_ENV}[model]
-
-    with model_env(popsize=popsize, ksize=ksize) as env:
-        optimizer = env.optimizer
-        creator = env.creator
-        with ut.stopwatch('main'):
-            # GA開始
-            # 初期集団生成
-            population = optimizer.init_population(creator, popsize=popsize)
-            history = [population]
-
-            # 進化
-            for i in range(1, epoch + 1):
-                # optimizer.advance()
-                population = optimizer(population)
-                history.append(population)
-
-                print('epoch:', i, 'popsize:', len(population), end='\r')
-                if save_trigger(i):
-                    file = f'popsize{popsize}_epoch{i}_{ut.strnow("%Y%m%d_%H%M")}.pkl'
-                    file = os.path.join(out, file)
-                    print('save:', file)
-                    # optimizer.save(file=os.path.join(out, file))
-                    ut.save(file, (env, optimizer, history))
-            return env, optimizer, history
-
-
-def get_plot():
-    ###
-    def ln(ind, origin):
-        if not origin:
-            return []
-        return list(zip(origin[0].value, ind.value, origin[1].value))
-    def dist(ind, origin):
-        if not origin:
-            return 0
-        values = np.array([[ind.value, par.value] for par in origin])
-        diff = values[:, :, 0] - values[:, :, 1]
-        dists = np.sqrt(np.sum(diff ** 2, axis=1))
-        return np.sum(dists)
-
-    fig, ax = plt.subplots()
-    def plot(pop):
-        pairs = [(fit.data, fit.data.origin.origin or ()) for fit in pop]
-        parents = list(chain(*(x[1] for x in pairs)))
-        lines = [ln(ind, origin) for ind, origin in pairs]
-        # print(lines)
-        # exit()
-        if False:
-            if lines and [x for x in lines if x]:
-                dists = [dist(ind, origin) for ind, origin in pairs]
-                print(sum(dists))
-
-        ax.cla()
-        ax.set_xlim((0, 100))
-        ax.set_ylim((0, 0.45))
-        cm = plt.get_cmap('jet')
-        # print(cm(10))
-        # exit()
-
-        if parents:
-            x_p, y_p = np.array([ind.value for ind in parents]).T
-            ax.scatter(x_p, y_p, c='r')
-
-            for i, l in enumerate(lines):
-                if l:
-                    ax.plot(*l, c=cm(i/(len(lines)+1)), linewidth=0.5)
-
-        x, y = np.array([fit.data.value for fit in pop]).T
-        ax.scatter(x, y, c='b')
-        # plt.pause(1e-10)
-        ax.annotate("MOEA/D", xy=(0.5, -0.08), xycoords="axes fraction", fontsize=28, horizontalalignment="center", verticalalignment="top")
-    plot.fig = fig
-    return plot
-
-
-def ga_res_temp1(out='result'):
-    def get_model():
-        # モデル読み込み
-        # model_cls = {'nsga2':NSGA2, 'moead':MOEAD}[model]
-        files = ut.fsort(glob.glob(os.path.join(out, f'*epoch*.pkl')))
-        for i, file in enumerate(files):
-            print(f'[{i}]', file)
-        print('select file')
-        n = int(input())
-        if n < 0:
-            return
-        file = files[n]
-        print('file:', file)
-        env, optimizer, history = ut.load(file)
-        return env, optimizer, history
-        # optimizer = model_cls.load(file=file)
-
-    def resume_main(env, optimizer, history):
-        print('resume_main')
-        plot = get_plot()
-        for i, population in enumerate(history):
-            plot(population)
-            origin = population[0].data.origin.origin or []
-            # print([x.id for x in origin], '->', population[0].data.id)
-        plt.show()
-
-
-    def resume_anim(env, optimizer, history):
-        plot = get_plot()
-        fig = plot.fig
-        def update(i):
-            print(i)
-            population = history[i]
-            # for i, population in enumerate(history):
-            plot(population)
-                # yield
-        show_anim(fig, update, file='result/anim.mp4', frames=100)
-
-    env, optimizer, history = get_model()
-    resume_anim(env, optimizer, history)
-
-
-def ga_main2(out='result', clear_directory=False):
-    ''' GAテスト & プロット
-    '''
-    if clear_directory and os.path.isdir(out):
-        shutil.rmtree(out)
-
-    epoch = 250
-    save_trigger = lambda i: i == epoch # 最後だけ
-    optimal_front = get_optomal_front()
-    stat = []
-
-    with MOEAD_ENV() as optimizer:
-        for rep in range(100):
-            with ut.stopwatch(f'epoch{epoch+1}'):
-                optimizer.create_initial_population()
-                for i in range(1, epoch + 1):
-                    optimizer.advance()
-                    print('epoch:', i, 'popsize:', len(optimizer.population), end='\r')
-
-            last_population = optimizer.get_individuals()
-            last_population.sort(key=lambda x: x.value)
-
-            conv = convergence(last_population, optimal_front)
-            div = diversity(last_population, optimal_front[0], optimal_front[-1])
-            stat.append((conv, div))
-
-            print("Convergence: ", conv)
-            print("Diversity: ", div)
-
-    print('=' * 20, 'Average', '=' * 20)
-    print("Convergence: ", np.mean([x[0] for x in stat]))
-    print("Diversity: ",  np.mean([x[1] for x in stat]))
-
-
-def ga_result1(out='result'):
-    ''' アニメーション表示
-    '''
-    file = ut.fsort(glob.glob(os.path.join(out, f'epoch*.pickle')))[-1]
-    optimizer = MOEAD.load(file=file)
-    print('epoch:', len(optimizer))
-
-    elite = optimizer.get_elite()
-    print('elite:', len(elite))
-
-    imax = len(optimizer) - 1
-
-    for epoch in range(0, imax, 20):
-        print(epoch, end='\n')
-        # plt.cla()
-        population = optimizer[epoch]
-        # population = optimizer.calc_rank(population)
-
-        front = [x for x in population]
-        x, y = np.array([x.data.value for x in front]).T
-        plt.scatter(x, y, color='blue', alpha=epoch/imax, label=f'epoch{epoch}')
-
-        # plt.legend()
-        plt.xlim((0, 50))
-        # plt.ylim((0, 50))
-        plt.pause(0.2)
-    plt.show()
-
-def ga_result11(model, out='result', show=False):
-    ''' 一括表示
-    '''
-    # モデル読み込み
-    model_cls = {'nsga2':NSGA2, 'moead':MOEAD}[model]
-    files = ut.fsort(glob.glob(os.path.join(out, f'*epoch*.pickle')))
-    for i, file in enumerate(files):
-        print(f'[{i}]', file)
-    print('select file')
-    n = int(input())
-    if n < 0:
-        return
-    file = files[n]
-    print('file:', file)
-    optimizer = model_cls.load(file=file)
-
-    # モデルパラメータ表示
-    print('[PARAMS]')
-    print('popsize:', optimizer.popsize)
-    print('epoch:', len(optimizer))
-    print('alternation:', optimizer.alternation)
-    if hasattr(optimizer, 'ksize'):
-        print('ksize:', optimizer.ksize)
-    print('Indiv:', optimizer.indiv_type.__name__)
-    optimizer.calc_rank(optimizer.population)
-    elite = optimizer.get_elite()
-    print('elite:', len(elite))
-
-    imax = len(optimizer)
-    # imax = 51
-    data = []
-
-    for epoch in range(0, imax, 1):
-        print(epoch, end='\r')
-        # plt.cla()
-        population = optimizer[epoch]
-        front = [x for x in population]
-        data.extend([[*x.data.value, epoch] for x in front])
-
-    x, y, c = np.array(data).T
-    fig, ax = plt.subplots()
-    # color_list = [(0, '#AADDFF'), (0.33, '#002288'), (0.66, '#EEDD22'), (1, '#CC0000')]
-    color_list = [(0, '#0022AA'), (0.3, '#11AA00'), (0.5, '#EEDD22'), (1, '#CC0000')]
-    color_list = [(0, 'blue'), (0.3, 'green'), (0.5, 'yellow'), (1, 'red')]
-    cmap = plc.LinearSegmentedColormap.from_list('custom_cmap', color_list, N=25)
-    im = ax.scatter(x, y, c=c, cmap=cmap, marker='o', alpha=1)
-
-    print('min dV=', x.min())
-    print('max RCS=', y.max())
-
-    # plt.legend()
-    ax.set_xlabel('$\\Delta\\it{V}$, $km/s$')
-    ax.set_ylabel('$RCS$, $m^2$')
-
-    ax.set_xlim((0, 100))
-    ax.set_ylim((0, 0.45))
-
-        # plt.pause(0.2)
-    cbar = fig.colorbar(im, label='Generation')
-    cbar.set_label('Generation', size=24)
-    plt.tight_layout()
-
-    # show or save
-    if show:
-        plt.show()
-    else:
-        basename = os.path.splitext(os.path.basename(file))[0]
-        plt.savefig(os.path.join('result', f'front_{model}_{basename}.png'))
-
-
-def ga_result12(model, out='result', show=False):
-    ''' 最適値プロット
-    '''
-    # モデル読み込み
-    model_cls = {'nsga2':NSGA2, 'moead':MOEAD}[model]
-    files = ut.fsort(glob.glob(os.path.join(out, f'*epoch*.pickle')))
-    for i, file in enumerate(files):
-        print(f'[{i}]', file)
-    print('select file')
-    n = int(input())
-    if n < 0:
-        return
-    file = files[n]
-    print('file:', file)
-    optimizer = model_cls.load(file=file)
-
-    # モデルパラメータ表示
-    print('[PARAMS]')
-    print('popsize:', optimizer.popsize)
-    print('epoch:', len(optimizer))
-    print('alternation:', optimizer.alternation)
-    print('Indiv:', optimizer.indiv_type.__name__)
-    optimizer.calc_rank(optimizer.population)
-    elite = optimizer.get_elite()
-    print('elite:', len(elite))
-
-    imax = len(optimizer)
-    # imax = 100
-    idx = 0
-
-    cache = file.replace('.pickle', '_data.npy')
-    if os.path.isfile(cache) and not force:
-        data = np.load(cache)
-
-    else:
-        data = []
-
-        for epoch in range(0, imax, 1):
-            print(epoch, end='\r')
-            # plt.cla()
-            population = optimizer[epoch]
-            indivs = [fit.get_indiv() for fit in population]
-            dv = min(map(itemgetter(0), indivs))
-            rcs = max(map(itemgetter(1), indivs))
-            if hasattr(population[0], 'id'):
-                idx = max(*map(attrgetter('id'), population), idx)
-            else:
-                idx = max(*map(attrgetter('id'), indivs), idx)
-            data.append([idx, dv, rcs])
-        np.save(cache, data)
-
-    i, x, y = np.array(data).T
-    fig, ax = plt.subplots()
-    # color_list = [(0, '#AADDFF'), (0.33, '#002288'), (0.66, '#EEDD22'), (1, '#CC0000')]
-    # color_list = [(0, '#0022AA'), (0.3, '#11AA00'), (0.5, '#EEDD22'), (1, '#CC0000')]
-    # color_list = [(0, 'blue'), (0.3, 'green'), (0.5, 'yellow'), (1, 'red')]
-    # cmap = plc.LinearSegmentedColormap.from_list('custom_cmap', color_list, N=25)
-    im = ax.plot(i, x)
-    im = ax.plot(i, y*100)
-
-    print('min dV=', x.min())
-    print('max RCS=', y.max())
-
-    # plt.legend()
-    # ax.set_xlabel('$\\Delta\\it{V}$, $km/s$')
-    # ax.set_ylabel('$RCS$, $m^2$')
-
-    # ax.set_xlim((0, 100))
-    # ax.set_ylim((0, 0.45))
-
-    # cbar = fig.colorbar(im, label='generation')
-
-    if show:
-        plt.show()
-    else:
-        basename = os.path.splitext(os.path.basename(file))[0]
-        plt.savefig(os.path.join('result', f'front_{model}_{basename}.png'))
-
-
-def ga_result13(model, out='result', show=False):
-    ''' HVプロット
-    '''
-    # モデル読み込み
-    model_cls = {'nsga2':NSGA2, 'moead':MOEAD}[model]
-    files = ut.fsort(glob.glob(os.path.join(out, f'*epoch*.pickle')))
-    for i, file in enumerate(files):
-        print(f'[{i}]', file)
-    print('select file')
-    n = int(input())
-    if n < 0:
-        return
-    file = files[n]
-    print('file:', file)
-    optimizer = model_cls.load(file=file)
-
-    ref_point = [100, 0]
-    hypervolume = HyperVolume(ref=ref_point)
-
-    # モデルパラメータ表示
-    print('[PARAMS]')
-    print('popsize:', optimizer.popsize)
-    print('epoch:', len(optimizer))
-    print('alternation:', optimizer.alternation)
-    print('Indiv:', optimizer.indiv_type.__name__)
-    optimizer.calc_rank(optimizer.population)
-    elite = optimizer.get_elite()
-    print('elite:', len(elite))
-
-    imax = len(optimizer)
-    # imax = 100
-    idx = 0
-    force = False
-
-    cache = file.replace('.pickle', '_hv.npy')
-    if os.path.isfile(cache) and not force:
-        hvs = np.load(cache)
-
-    else:
-        hvs = []
-        population = []
-        for epoch in range(0, imax, 1):
-            # print(epoch, end='\r')
-            # plt.cla()
-            population = optimizer[epoch] + population
-            optimizer.calc_rank(population)
-            population = [fit for fit in population if fit.rank == 1]
-            hv = hypervolume(population)
-            print('epoch:', epoch, 'HV=', hv)
-            if hasattr(population[0], 'id'):
-                idx = max(*map(attrgetter('id'), population), idx)
-            else:
-                idx = max(*map(attrgetter('id'), indivs), idx)
-            hvs.append([idx, hv])
-        np.save(cache, hvs)
-
-    i, v = np.array(hvs).T
-    fig, ax = plt.subplots()
-    im = ax.plot(i, v, label=model)
-
-    ax.legend()
-    ax.set_xlabel('Evaluation Step')
-    ax.set_ylabel('Hypervolume')
-
-    if show:
-        plt.show()
-    else:
-        basename = os.path.splitext(os.path.basename(file))[0]
-        plt.savefig(os.path.join('result', f'front_{model}_{basename}_hv.png'))
-
-
-def ga_result14(model, out='result', show=False):
-    ''' エリート個体数を数える
-    '''
-    # モデル読み込み
-    model_cls = {'nsga2':NSGA2, 'moead':MOEAD}[model]
-    files = ut.fsort(glob.glob(os.path.join(out, f'*epoch*.pickle')))
-    for i, file in enumerate(files):
-        print(f'[{i}]', file)
-    print('select file')
-    n = int(input())
-    if n < 0:
-        return
-    file = files[n]
-    print('file:', file)
-    optimizer = model_cls.load(file=file)
-
-    imax = len(optimizer)
-    # imax = 100
-    idx = 0
-
-    cache = file.replace('.pickle', '_ndom.npy')
-    if os.path.isfile(cache) and not force:
-        data = np.load(cache)
-
-    else:
-        data = []
-
-        for epoch in range(0, imax, 1):
-            print(epoch, end='\r')
-            # plt.cla()
-            population = optimizer[epoch]
-            population = optimizer.calc_rank(population)
-            front = [x for x in population if x.rank == 1]
-
-            indivs = [fit.get_indiv() for fit in population]
-
-            if hasattr(population[0], 'id'):
-                idx = max(*map(attrgetter('id'), population), idx)
-            else:
-                idx = max(*map(attrgetter('id'), indivs), idx)
-            data.append([idx, len(front)])
-        np.save(cache, data)
-
-
-def ga_result2(out='result'):
-    file = ut.fsort(glob.glob(os.path.join(out, f'epoch*.pickle')))[-1]
-    optimizer = MOEAD.load(file=file)
-
-    population = optimizer[-1]
-    front = [x for x in population if x.rank == 1]
-    front.sort(key=attrgetter('data.value'))
-
-    for fit in front:
-        # print(ind.value, ind.data.value)
-        print(fit.get_indiv().get_gene().get_ivalue(),
-              fit.value)
-
-    crowdings = [ind.value[1] for ind in front]
-
-    fig, axes = plt.subplots(2)
-    axes[0].plot(crowdings)
-
-    x, y = np.array([x.data.value for x in front]).T
-    im = axes[1].scatter(x, y, c=crowdings, cmap='jet')
-    # plt.xlim((0, 1))
-    # plt.ylim((0, 1))
-    fig.colorbar(im)
-    plt.show()
-
-    # for ind in first_population:
-    #     print(ind(), ind.rank, ind.fitness)
-    # return
-
-    # last_population = optimizer.population
-    # x, y = np.array([x() for x in last_population]).T
-    # plt.scatter(x, y)
-
-    # plt.xlim((0, 1))
-    # plt.ylim((0, 1))
-    # plt.show()
-
 
 ################################################################################
 
 def __test__():
-    print(ut.strnow('%Y%m%d_%H%M'))
+    libname = 'case0.dll'
+    loader_path = '.'
+    # cdll = np.ctypeslib.load_library(libname, loader_path)
+    cdll = ctypes.WinDLL(libname)
 
-def pltenv():
-    rcParams['figure.figsize'] = 11, 7 # default=>(6.4, 4.8)
-    rcParams['font.family'] = 'Times New Roman', 'serif'
-    rcParams['font.size'] = 24 # default=>10.0
-
-    # rcParams["mathtext.rm"] = 'Times New Roman'
-    # rcParams["mathtext.it"] = 'Times New Roman'
-    # rcParams["mathtext.bf"] = 'Times New Roman'
-    # rcParams["mathtext.rm"] = 'Times New Roman'
-    # rcParams["mathtext.sf"] = 'Times New Roman'
-    # rcParams["mathtext.tt"] = 'Times New Roman'
-
-    rcParams['savefig.directory'] = 'data'
-    rcParams['savefig.transparent'] = True
+    f_initialize = orbitlib.get_f_initialize(cdll)
+    f_init_debri = orbitlib.get_f_init_debri(cdll)
+    f_call_problem = orbitlib.get_f_call_problem(cdll)
+    f_initialize()
+    print(cdll)
 
 
 def get_args():
@@ -845,16 +347,6 @@ def get_args():
     docstring for get_args.
     '''
     parser = argparse.ArgumentParser()
-    parser.add_argument('method', nargs='?', default='',
-                        help='Main method type')
-    parser.add_argument('--model', '-m', default='nsga2',
-                        help='Model type')
-    parser.add_argument('--out', '-o', default='',
-                        help='Filename of the new script')
-    parser.add_argument('--clear', '-c', action='store_true',
-                        help='Remove output directory before start')
-    parser.add_argument('--force', '-f', action='store_true',
-                        help='force')
     parser.add_argument('--test', '-t', action='store_true',
                         help='Run as test mode')
     args = parser.parse_args()
@@ -862,59 +354,11 @@ def get_args():
 
 
 def main():
-    '''
-    docstring for main.
-    '''
-
-    # print(sys.getrecursionlimit())
-    sys.setrecursionlimit(10000)
-
-    args = get_args()
-    model = args.model
-    out = os.path.join('result', model, args.out)
-    clear = args.clear
 
     if args.test:
         __test__()
         return
 
-    pltenv()
-
-    if args.method == 'm1':
-        ga_main1(model, out=out, clear_directory=clear)
-    elif args.method == 'r1':
-        ga_res_temp1(out=out)
-
-    elif args.method == 'm2':
-        ga_main2(out=out, clear_directory=clear)
-    elif args.method == 'r1':
-        ga_result1(out=out)
-    elif args.method == 'r11':
-        ga_result11(model, out=out)
-    elif args.method == 'r11s':
-        ga_result11(model, out=out, show=True)
-    elif args.method == 'r12':
-        ga_result12(model, out=out)
-    elif args.method == 'r12s':
-        ga_result12(model, out=out, show=True)
-    elif args.method == 'r13':
-        ga_result13(model, out=out)
-    elif args.method == 'r13s':
-        ga_result13(model, out=out, show=True)
-    elif args.method == 'r14':
-        ga_result14(model, out=out)
-    elif args.method == 'r2':
-        ga_result2(out=out)
-
 
 if __name__ == '__main__':
     main()
-
-'''
-Note:
-2018.11.21 08:22
-MOEA/D ksize=50 N=500 # ksize大きくすると多様性が減少
-2018.11.21 08:25
-MOEA/D ksize=20 N=500 # ksize大きくすると多様性が減少
-
-'''

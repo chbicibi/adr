@@ -1,5 +1,5 @@
 FC      = gfortran
-FCFLAGS = -O2 -Wall -Wno-unused-dummy-argument -Wno-unused-function -ffree-line-length-none -std=f2008 -fall-intrinsics
+FCFLAGS = -O2 -Wall -Wno-unused-dummy-argument -Wno-unused-function -ffree-line-length-none -std=f2008 -fall-intrinsics -static
 # FCFLAGS = -O2 -ffpe-trap=invalid,zero,overflow -fbacktrace -g
 # FCFLAGS = -fopenmp -static-libgfortran -static-libgcc
 
@@ -8,8 +8,8 @@ DEST    = .
 TARGET  = case0.dll
 OBJS    = problem.o util.o
 
-LIBPATH = ../orbitlib
-INCPATH = ../orbitlib
+LIBPATH = ../orbitlib/lib
+INCPATH = ../orbitlib/include
 LIBNAME = orbit
 LIBOPT  = $(addprefix -L,$(LIBPATH)) $(addprefix -l,$(LIBNAME))
 INCOPT  = $(addprefix -I,$(INCPATH))

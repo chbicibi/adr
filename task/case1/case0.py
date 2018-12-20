@@ -74,16 +74,25 @@ def __test__():
     print('n_debris:', n_debris)
 
     # 関数呼び出し
-    for i in range(1000000):
-        a = np.array([0, 2, 3, 4, 5], dtype=np.int32)
-        b = np.array([0, 1800, 0, 1800, 0, 1800, 0, 1800], dtype=np.float64)
+    for i in range(10000):
+        iarray = random.sample(range(1, 100), 10)
+        darray = np.random.rand(len(iarray)*2)
+        darray[0::2] = darray[0::2] * 10   # 奇数番目: 出発時間 [日]
+        darray[1::2] = darray[1::2] * 3600 # 偶数番目: 遷移時間 [秒]
+        a = np.array([0] + iarray, dtype=np.int32)
+        b = np.array(darray, dtype=np.float64)
+        # a = np.array([0, 2, 3, 4, 5], dtype=np.int32)
+        # b = np.array([0, 1800, 0, 1800, 0, 1800, 0, 1800], dtype=np.float64)
+        print('a:', a)
+        print('b:', b)
         delv, rcs = f_call_problem(a, b)
-    print(delv, rcs)
+        print(f'delv: {delv} rcs: {rcs}')
+    # print(delv, rcs)
 
 
 ################################################################################
 
 
 if __name__ == '__main__':
-    # __test__()
-    print(np.empty_like(np.array([1.0])))
+    __test__()
+    # print(np.empty_like(np.array([1.0])))
