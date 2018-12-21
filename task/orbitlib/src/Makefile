@@ -31,9 +31,12 @@ static: $(TARLIBS)
 $(TARLIBD): $(OBJS)
 	$(FC) $(FCFLAGS) -shared -o $@ $^ $(LIBOPT)
 	cp $@ $(DEST)/$@
+	cp *.mod ../include/
 
 $(TARLIBS): $(OBJS)
 	ar cr $@ $^
+	cp $@ $(DEST)/$@
+	cp *.mod ../include/
 
 %.o: %.f08
 	$(FC) $(FCFLAGS) -c -o $@ $< $(INCOPT)

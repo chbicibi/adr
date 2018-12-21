@@ -77,8 +77,8 @@ def get_plot():
                 print(sum(dists))
 
         ax.cla()
-        ax.set_xlim((0, 10))
-        ax.set_ylim((0, 10))
+        # ax.set_xlim((0, 100))
+        # ax.set_ylim((0, 100000))
         cm = plt.get_cmap('jet')
         # print(cm(10))
         # exit()
@@ -132,7 +132,7 @@ def ga_res_temp1(out='result'):
         plot = get_plot()
         fig = plot.fig
         def update(i):
-            print(i)
+            print(i, end='\r')
             population = history[i]
             # for i, population in enumerate(history):
             plot(population)
@@ -148,7 +148,7 @@ def ga_res_temp1(out='result'):
 FFMpegWriter = None
 def init_ffmpeg():
     global FFMpegWriter
-    bins_ffmpeg = glob.glob('../**/ffmpeg.exe', recursive=True)
+    bins_ffmpeg = glob.glob('../../**/ffmpeg.exe', recursive=True)
     if not bins_ffmpeg:
         return
     rcParams["animation.ffmpeg_path"] = bins_ffmpeg[0]
@@ -167,8 +167,8 @@ def show_anim(fig, update, frames=1000, init_func=lambda:None, interval=8, file=
 ################################################################################
 
 def __test__():
-    libname = 'case0.dll'
-    loader_path = '.'
+    libname = 'problem.dll'
+    loader_path = 'fortran'
     # cdll = np.ctypeslib.load_library(libname, loader_path)
     cdll = ctypes.WinDLL(libname)
 

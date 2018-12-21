@@ -53,7 +53,7 @@ class Problem(object):
             rcs_file = '../data/RCS_list.txt'
             n_debris = f_init_debri(tle_file, rcs_file)
             print('n_debris:', n_debris)
-            FUNC_FORTRAN = (f_call_problem, n_debris)
+            FUNC_FORTRAN = f_call_problem, n_debris
         else:
             f_call_problem, n_debris = FUNC_FORTRAN
 
@@ -72,6 +72,12 @@ class Problem(object):
 
     def __reduce_ex__(self, protocol):
         return type(self), (self._size,)
+
+
+def manual_problem(array):
+    obj0 = sum(array)
+    obj1 = 1 / obj0
+    return obj0, obj1
 
 
 
@@ -99,14 +105,14 @@ class Optimize_ENV(object):
 
         # 設計範囲
         low_bounds = [0, 0, 0]
-        upp_bounds = [10, 10, 10]
+        upp_bounds = [1, 1, 1]
 
         # 最適化重み(正=>最小化, 負=>最大化)
         opt_weight = [1, 1]
 
         # 問題関数
         # problem = Problem()
-        problem = zdt1
+        problem = get_obj_func()
 
         with Environment() as env:
             # 個体クラス

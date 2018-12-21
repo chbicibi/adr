@@ -5,6 +5,7 @@
 *.csv
 *.plt
 *.png
+*.mp4
 __*__/
 config/
 result/
